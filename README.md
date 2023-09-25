@@ -1,6 +1,10 @@
 # SubdomainX
 Domains Collector 
 
+# requirments 
+sudo apt install subfinder
+sudo apt install amaas
+
 # Install
 
 ```
@@ -12,3 +16,9 @@ mv subdomain /user/local/bin
 
 # Use 
 subdomain domain.com
+
+# features 
+1. subfinder
+2. amaas
+3. Google
+4. crh.sh
