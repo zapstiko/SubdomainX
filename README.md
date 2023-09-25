@@ -21,4 +21,4 @@ subdomainx domain.com
 1. subfinder
 2. amaas
 3. Google
-4. crh.sh
+4. crt.sh
