@@ -1,0 +1,2 @@
+# SubdomainX
+Domains Collector 
