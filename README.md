@@ -15,7 +15,7 @@ sudo cp subdomainx /usr/local/bin/
 ```
 
 # Use 
-subdomain domain.com
+subdomainx domain.com
 
 # features 
 1. subfinder
