@@ -2,8 +2,8 @@
 Domains Collector 
 
 # requirments 
-sudo apt install subfinder
-sudo apt install amaas
+1. sudo apt install subfinder
+2. sudo apt install amaas
 
 # Install
 
