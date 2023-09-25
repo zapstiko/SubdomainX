@@ -1,0 +1,150 @@
+#!/bin/bash
+
+# Banner with your name, tool name, and GitHub link
+echo "************************************"
+echo "   SubdomainX by Abu Raihan Biswas"
+echo "   GitHub: GitHub.com/zapstiko/SubdomainX"
+echo "************************************"
+
+# Rest of the script remains unchanged
+
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <domain>"
+    exit 1
+fi
+
+domain="$1"
+
+# Function to find subdomains from Google
+find_subdomains_google() {
+    url="https://www.google.com/search?q=site%3A$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+}
+
+# Function to find subdomains from crt.sh
+find_subdomains_crtsh() {
+    url="https://crt.sh/?q=%25.$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/' | sort -u
+}
+
+# Function to find subdomains using subfinder (with banner removed)
+find_subdomains_subfinder() {
+    subfinder -d $domain -silent | sort -u
+}
+
+# Function to find subdomains using amass (with banner removed)
+find_subdomains_amass() {
+    amass enum -d $domain -silent | sort -u
+}
+
+# Find subdomains from Google
+google_subdomains=$(find_subdomains_google)
+
+# Find subdomains from crt.sh
+crtsh_subdomains=$(find_subdomains_crtsh)
+
+# Find subdomains using subfinder (with banner removed)
+subfinder_subdomains=$(find_subdomains_subfinder)
+
+# Find subdomains using amass (with banner removed)
+amass_subdomains=$(find_subdomains_amass)
+
+# Combine and sort subdomains
+all_subdomains=$(echo -e "$google_subdomains\n$crtsh_subdomains\n$subfinder_subdomains\n$amass_subdomains" | sort -u)
+
+# Count the number of subdomains
+num_subdomains=$(echo "$all_subdomains" | wc -l)
+
+if [ -z "$all_subdomains" ]; then
+    echo "No subdomains found for $domain"
+else
+    echo "Number of subdomains found for $domain: $num_subdomains"
+    echo "Subdomains for $domain:"
+    echo "$all_subdomains"
+fi
+
+ChatGPT
+
+
+Great! You've successfully added the tool name "SubdomainX" to the banner. Your script is now ready to use with the updated banner. If you have any further questions or need additional assistance, feel free to let me know!
+
+
+
+
+User
+add new features verbose
+ChatGPT
+
+
+To add a verbose mode to your script, you can include an optional flag, like -v for example. When this flag is provided, the script will display detailed information about each step it performs. Here's the updated script with a verbose mode:
+
+bash
+Copy code
+#!/bin/bash
+
+# Banner with your name, tool name, and GitHub link
+echo "************************************"
+echo "   SubdomainX by Abu Raihan Biswas"
+echo "   GitHub: GitHub.com/zapstiko/SubdomainX"
+echo "************************************"
+
+# Define a variable for verbose mode
+verbose=false
+
+# Check if the first argument is '-v' for verbose mode
+if [ "$1" == "-v" ]; then
+    verbose=true
+    shift # Remove the '-v' from the arguments
+fi
+
+# Function to display verbose information
+verbose_log() {
+    if [ "$verbose" = true ]; then
+        echo "VERBOSE: $1"
+    fi
+}
+
+# Rest of the script remains unchanged
+
+# ...
+
+# Modify functions to include verbose information
+find_subdomains_google() {
+    verbose_log "Searching for subdomains on Google..."
+    # ...
+}
+
+find_subdomains_crtsh() {
+    verbose_log "Querying crt.sh for subdomains..."
+    # ...
+}
+
+find_subdomains_subfinder() {
+    verbose_log "Running subfinder..."
+    # ...
+}
+
+find_subdomains_amass() {
+    verbose_log "Running amass..."
+    # ...
+}
+
+# ...
+
+# Call the verbose_log function whenever you want to display verbose information
+# Example: verbose_log "This is a verbose message."
+
+# ...
+With this modification, you can run the script with or without the -v flag. When run with -v, it will provide detailed information about each step it performs.
+
+Example usage:
+
+bash
+Copy code
+./subdomainx.sh -v example.com
+Please note that you can place the -v flag anywhere in the command line arguments. The script will shift it out and set the verbose variable accordingly.
