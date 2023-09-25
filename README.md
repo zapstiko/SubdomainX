@@ -1,2 +1,5 @@
 # SubdomainX
 Domains Collector 
+
+# Install
+
