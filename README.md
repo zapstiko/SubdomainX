@@ -11,7 +11,7 @@ sudo apt install amaas
 git clone https://github.com/zapstiko/SubdomainX.git
 cd SubdomainX
 chmod +x subdomainx
-sudo mv subdomainx /user/local/bin
+sudo cp subdomainx /usr/local/bin/
 ```
 
 # Use 
