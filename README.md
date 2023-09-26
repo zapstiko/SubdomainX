@@ -1,6 +1,22 @@
 # SubdomainX
 Domains Collector 
 
+# Features 
+*  Crt.sh
+*  Baidu..
+*  Yahoo..
+*  Google..
+*  Bing..
+*  Ask..
+*  Netcraft..
+*  DNSdumpster..
+*  ThreatCrowd..
+*  SSL Certificates..
+*  PassiveDNS..
+*  Subfinder..
+*  Amaas..
+
+
 # requirments 
 1. sudo apt install subfinder
 2. sudo apt install amaas
@@ -17,17 +33,3 @@ sudo cp subdomainx /usr/local/bin/
 # Use 
 subdomainx domain.com
 
-# Features 
-*  Crt.sh
-*  Baidu..
-*  Yahoo..
-*  Google..
-*  Bing..
-*  Ask..
-*  Netcraft..
-*  DNSdumpster..
-*  ThreatCrowd..
-*  SSL Certificates..
-*  PassiveDNS..
-*  Subfinder..
-*  Amaas..
