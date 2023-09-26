@@ -1,10 +1,25 @@
 #!/bin/bash
 
 # Banner with your name, tool name, and GitHub link
-echo "************************************"
-echo "   SubdomainX by Abu Raihan Biswas"
-echo "   GitHub: GitHub.com/zapstiko/SubdomainX"
-echo "************************************"
+
+cat <<"EOF"
+
+
+
+  ____        _         _                       _      __  __
+ / ___| _   _| |__   __| | ___  _ __ ___   __ _(_)_ __ \ \/ /
+ \___ \| | | | '_ \ / _` |/ _ \| '_ ` _ \ / _` | | '_ \ \  / 
+  ___) | |_| | |_) | (_| | (_) | | | | | | (_| | | | | |/  \ 
+ |____/ \__,_|_.__/ \__,_|\___/|_| |_| |_|\__,_|_|_| |_/_/\_\
+                                                             
+     
+
+        🗲  Automated Subdomain Gathering Tool 🗲
+          GitHub: GitHub.com/zapstiko/SubdomainX
+             Developed By Abu Raihan Biswas
+                       zapstiko
+
+EOF
 
 # Rest of the script remains unchanged
 
