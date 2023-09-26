@@ -27,9 +27,82 @@ find_subdomains_google() {
 find_subdomains_crtsh() {
     url="https://crt.sh/?q=%25.$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$_user_agent" -s "$url")
+    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/' | sort -u
+}
+
+# Function to find subdomains from Bing
+find_subdomains_bing() {
+    url="https://www.bing.com/search?q=site%3A$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+}
+
+# Function to find subdomains from Baidu
+find_subdomains_baidu() {
+    url="https://www.baidu.com/s?wd=site%3A$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+}
+
+# Function to find subdomains from DNSdumpster
+find_subdomains_dnsdumpster() {
+    url="https://dnsdumpster.com/"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    csrf_token=$(curl -A "$user_agent" -s "$url" | grep -oP "name='csrfmiddlewaretoken' value='\K[^']+" | head -1)
+    response=$(curl -A "$user_agent" -s -X POST -H "Referer: $url" -H "X-CSRFToken: $csrf_token" -d "csrfmiddlewaretoken=$csrf_token&targetip=$domain" "$url")
+    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain" | sort -u
+}
+
+# Function to find subdomains from Yahoo
+find_subdomains_yahoo() {
+    url="https://search.yahoo.com/search?p=site%3A$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+}
+
+# Function to find subdomains from Netcraft
+find_subdomains_netcraft() {
+    url="https://searchdns.netcraft.com/?restriction=site+contains&host=.$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain" | sort -u
+}
+
+# Function to find subdomains from Ask
+find_subdomains_ask() {
+    url="https://www.ask.com/web?q=site%3A$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+}
+
+# Function to find subdomains from ThreatCrowd
+find_subdomains_threatcrowd() {
+    url="https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=$domain"
+    response=$(curl -s "$url")
+    echo "$response" | jq -r '.subdomains[]' | sort -u
+}
+
+# Function to find subdomains from SSL Certificates
+find_subdomains_sslcertificates() {
+    url="https://crt.sh/?q=%25.$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
     echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/' | sort -u
 }
+
+# Function to find subdomains from PassiveDNS
+find_subdomains_passivedns() {
+    url="https://dns.bufferover.run/dns?q=.$domain"
+    user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    response=$(curl -A "$user_agent" -s "$url")
+    echo "$response" | jq -r '.FDNS_A[]' | sed 's/^[^.]*\.//;s/[^.]*$//' | sort -u
+}
+
 
 # Function to find subdomains using subfinder (with banner removed)
 find_subdomains_subfinder() {
@@ -47,6 +120,33 @@ google_subdomains=$(find_subdomains_google)
 # Find subdomains from crt.sh
 crtsh_subdomains=$(find_subdomains_crtsh)
 
+# Find subdomains from Bing
+bing_subdomains=$(find_subdomains_bing)
+
+# Find subdomains from Baidu
+baidu_subdomains=$(find_subdomains_baidu)
+
+# Find subdomains from DNSdumpster
+dnsdumpster_subdomains=$(find_subdomains_dnsdumpster)
+
+# Find subdomains from Yahoo
+yahoo_subdomains=$(find_subdomains_yahoo)
+
+# Find subdomains from Netcraft
+netcraft_subdomains=$(find_subdomains_netcraft)
+
+# Find subdomains from Ask
+ask_subdomains=$(find_subdomains_ask)
+
+# Find subdomains from ThreatCrowd
+threatcrowd_subdomains=$(find_subdomains_threatcrowd)
+
+# Find subdomains from SSL Certificates
+sslcertificates_subdomains=$(find_subdomains_sslcertificates)
+
+# Find subdomains from PassiveDNS
+passivedns_subdomains=$(find_subdomains_passivedns)
+
 # Find subdomains using subfinder (with banner removed)
 subfinder_subdomains=$(find_subdomains_subfinder)
 
@@ -54,7 +154,7 @@ subfinder_subdomains=$(find_subdomains_subfinder)
 amass_subdomains=$(find_subdomains_amass)
 
 # Combine and sort subdomains
-all_subdomains=$(echo -e "$google_subdomains\n$crtsh_subdomains\n$subfinder_subdomains\n$amass_subdomains" | sort -u)
+all_subdomains=$(echo -e "$google_subdomains\n$crtsh_subdomains\n$bing_subdomains\n$baidu_subdomains\n$dnsdumpster_subdomains\n$yahoo_subdomains\n$subfinder_subdomains\n$amass_subdomains\n$netcraft_subdomains\n$ask_subdomains\n$threatcrowd_subdomains\n$sslcertificates_subdomains\n$passivedns_subdomains" | sort -u)
 
 # Count the number of subdomains
 num_subdomains=$(echo "$all_subdomains" | wc -l)
