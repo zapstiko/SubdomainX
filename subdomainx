@@ -126,7 +126,7 @@ find_subdomains_subfinder() {
 
 # Function to find subdomains using amass (with banner removed)
 find_subdomains_amass() {
-    amass enum -d $domain -silent | sort -u
+    amass enum -norecursive -noalts -d $domain -silent | sort -u
 }
 
 # Find subdomains from Google
