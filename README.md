@@ -17,8 +17,17 @@ sudo cp subdomainx /usr/local/bin/
 # Use 
 subdomainx domain.com
 
-# features 
-1. subfinder
-2. amaas
-3. Google
-4. crt.sh
+# Features 
+[-]  Crt.sh
+[-]  Baidu..
+[-]  Yahoo..
+[-]  Google..
+[-]  Bing..
+[-]  Ask..
+[-]  Netcraft..
+[-]  DNSdumpster..
+[-]  ThreatCrowd..
+[-]  SSL Certificates..
+[-]  PassiveDNS..
+[-]  Subfinder..
+[-]  Amaas..
