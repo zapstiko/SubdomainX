@@ -2,7 +2,7 @@
 Domains Collector 
 
 # Features 
-*  Crt.sh
+*  Crt.sh..
 *  Baidu..
 *  Yahoo..
 *  Google..
