@@ -167,11 +167,9 @@ subfinder_subdomains=$(find_subdomains_subfinder)
 
 # Find subdomains using amass (with banner removed)
 amass_subdomains=$(find_subdomains_amass)
+# Find subdomains using assetfinder
+assetfinder_subdomains=$(find_subdomains_assetfinder)
 
-# Function to find subdomains using assetfinder
-find_subdomains_assetfinder() {
-    assetfinder --subs-only $domain | sort -u
-}
 # Combine and sort subdomains
 all_subdomains=$(echo -e "$google_subdomains\n$crtsh_subdomains\n$bing_subdomains\n$baidu_subdomains\n$dnsdumpster_subdomains\n$yahoo_subdomains\n$subfinder_subdomains\n$amass_subdomains\n$netcraft_subdomains\n$ask_subdomains\n$threatcrowd_subdomains\n$sslcertificates_subdomains\n$passivedns_subdomains\n$assetfinder_subdomains" | sort -u)
 # Count the number of subdomains
