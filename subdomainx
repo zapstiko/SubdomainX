@@ -35,7 +35,7 @@ find_subdomains_google() {
     url="https://www.google.com/search?q=site%3A$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///'
 }
 
 # Function to find subdomains from crt.sh
@@ -43,7 +43,7 @@ find_subdomains_crtsh() {
     url="https://crt.sh/?q=%25.$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$_user_agent" -s "$url")
-    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/' | sort -u
+    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/'
 }
 
 # Function to find subdomains from Bing
@@ -51,7 +51,7 @@ find_subdomains_bing() {
     url="https://www.bing.com/search?q=site%3A$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///'
 }
 
 # Function to find subdomains from Baidu
@@ -59,7 +59,7 @@ find_subdomains_baidu() {
     url="https://www.baidu.com/s?wd=site%3A$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///'
 }
 
 # Function to find subdomains from DNSdumpster
@@ -68,7 +68,7 @@ find_subdomains_dnsdumpster() {
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     csrf_token=$(curl -A "$user_agent" -s "$url" | grep -oP "name='csrfmiddlewaretoken' value='\K[^']+" | head -1)
     response=$(curl -A "$user_agent" -s -X POST -H "Referer: $url" -H "X-CSRFToken: $csrf_token" -d "csrfmiddlewaretoken=$csrf_token&targetip=$domain" "$url")
-    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain" | sort -u
+    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain"
 }
 
 # Function to find subdomains from Yahoo
@@ -76,7 +76,7 @@ find_subdomains_yahoo() {
     url="https://search.yahoo.com/search?p=site%3A$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///'
 }
 
 # Function to find subdomains from Netcraft
@@ -84,7 +84,7 @@ find_subdomains_netcraft() {
     url="https://searchdns.netcraft.com/?restriction=site+contains&host=.$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain" | sort -u
+    echo "$response" | grep -Eo "[a-zA-Z0-9._-]+\.$domain"
 }
 
 # Function to find subdomains from Ask
@@ -92,14 +92,14 @@ find_subdomains_ask() {
     url="https://www.ask.com/web?q=site%3A$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u
+    echo "$response" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///'
 }
 
 # Function to find subdomains from ThreatCrowd
 find_subdomains_threatcrowd() {
     url="https://www.threatcrowd.org/searchApi/v2/domain/report/?domain=$domain"
     response=$(curl -s "$url")
-    echo "$response" | jq -r '.subdomains[]' | sort -u
+    echo "$response" | jq -r '.subdomains[]'
 }
 
 # Function to find subdomains from SSL Certificates
@@ -107,27 +107,27 @@ find_subdomains_sslcertificates() {
     url="https://crt.sh/?q=%25.$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/' | sort -u
+    echo "$response" | grep -Eo ">[a-zA-Z0-9._-]+\.${domain}</TD>" | sed 's/[^>]*>\([^<]*\)<\/TD>/\1/'
 }
 # Function to find subdomains from PassiveDNS
 find_subdomains_passivedns() {
     url="https://dns.bufferover.run/dns?q=.$domain"
     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     response=$(curl -A "$user_agent" -s "$url")
-    echo "$response" | jq -r '.FDNS_A[]' | sed 's/^[^.]*\.//;s/[^.]*$//' | sort -u
+    echo "$response" | jq -r '.FDNS_A[]' | sed 's/^[^.]*\.//;s/[^.]*$//'
 }
 # Function to find subdomains using subfinder (with banner removed)
 find_subdomains_subfinder() {
-    subfinder -d $domain -silent | sort -u
+    subfinder -d $domain -silent
 }
 
 # Function to find subdomains using amass (with banner removed)
 find_subdomains_amass() {
-    amass enum -norecursive -noalts -d $domain -silent | sort -u
+    amass enum -norecursive -noalts -d $domain -silent
 }
 # Function to find subdomains using assetfinder
 find_subdomains_assetfinder() {
-    assetfinder --subs-only $domain | sort -u
+    assetfinder --subs-only $domain
 }
 # Find subdomains from Google
 google_subdomains=$(find_subdomains_google)
