@@ -19,7 +19,7 @@ Domains Collector
 
 # Requirments 
 1. sudo apt install subfinder
-2. sudo apt install amaas
+2. sudo apt install amass
 3. sudo apt install assetfinder
 
 # Install
