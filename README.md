@@ -25,12 +25,9 @@ Domains Collector
 # Install
 
 ```
-git clone https://github.com/zapstiko/SubdomainX.git
-cd SubdomainX
-chmod +x subdomainx
-sudo cp subdomainx /usr/local/bin/
+go install github.com/zapstiko/subdomainx@latest
 ```
 
 # Use 
-subdomainx domain.com
+subdomainx -d domain.com
 
